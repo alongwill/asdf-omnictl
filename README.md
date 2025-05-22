@@ -8,6 +8,8 @@
 
 # Contents
 
+- [asdf-omnictl  ](#asdf-omnictl--)
+- [Contents](#contents)
 - [Dependencies](#dependencies)
 - [Install](#install)
 - [Contributing](#contributing)
