@@ -19,29 +19,29 @@ if [ -n "${GITHUB_API_TOKEN:-}" ]; then
 fi
 
 get_machine_os() {
-  local OS
-  OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+	local OS
+	OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 
-  case "${OS}" in
-  darwin*) echo "darwin" ;;
-  linux*) echo "linux" ;;
-  freebsd*) echo "freebsd" ;;
-  *) fail "OS not supported: ${OS}" ;;
-  esac
+	case "${OS}" in
+	darwin*) echo "darwin" ;;
+	linux*) echo "linux" ;;
+	freebsd*) echo "freebsd" ;;
+	*) fail "OS not supported: ${OS}" ;;
+	esac
 }
 
 get_machine_arch() {
-  local ARCH
-  ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
+	local ARCH
+	ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
 
-  case "${ARCH}" in
-  x86_64) echo "amd64" ;;
-  aarch64) echo "arm64" ;;
-  armv8l) echo "arm64" ;;
-  armv7l) arch="arm" ;;
-  arm64) echo "arm64" ;;
-  *) fail "Architecture not supported: $ARCH" ;;
-  esac
+	case "${ARCH}" in
+	x86_64) echo "amd64" ;;
+	aarch64) echo "arm64" ;;
+	armv8l) echo "arm64" ;;
+	armv7l) arch="arm" ;;
+	arm64) echo "arm64" ;;
+	*) fail "Architecture not supported: $ARCH" ;;
+	esac
 }
 
 sort_versions() {
@@ -50,10 +50,10 @@ sort_versions() {
 }
 
 list_github_tags() {
-  git ls-remote --tags --refs "$GH_REPO" |
-    grep -o 'refs/tags/.*' | cut -d/ -f3- |
-    grep -o '^v.*' |
-    sed 's/^v//'
+	git ls-remote --tags --refs "$GH_REPO" |
+		grep -o 'refs/tags/.*' | cut -d/ -f3- |
+		grep -o '^v.*' |
+		sed 's/^v//'
 }
 
 list_all_versions() {
@@ -61,18 +61,18 @@ list_all_versions() {
 }
 
 download_release() {
-  local version filename url
-  version="$1"
-  filename="$2"
-  if ! os=$(get_machine_os); then
-    fail "$os"
-  fi
-  if ! arch=$(get_machine_arch); then
-    fail "$arch"
-  fi
-  local platform="${os}-${arch}"
+	local version filename url
+	version="$1"
+	filename="$2"
+	if ! os=$(get_machine_os); then
+		fail "$os"
+	fi
+	if ! arch=$(get_machine_arch); then
+		fail "$arch"
+	fi
+	local platform="${os}-${arch}"
 
-  url="$GH_REPO/releases/download/v${version}/${TOOL_NAME}-${platform}"
+	url="$GH_REPO/releases/download/v${version}/${TOOL_NAME}-${platform}"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
